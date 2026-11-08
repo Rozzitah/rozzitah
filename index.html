@@ -1,145 +1,282 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rozzitah | Shop Everything</title>
-
+<title>Rozzitah | Online Shopping</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#faf8f4;color:#24221f}
-header{background:#fff;padding:22px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
-.logo{font-family:Georgia,serif;font-size:30px;letter-spacing:4px;color:#a47c39}
-nav a{margin:0 12px;text-decoration:none;color:#333;font-size:14px}
-.cart{border:1px solid #a47c39;padding:10px 18px;border-radius:25px;background:white;cursor:pointer}
-.hero{padding:75px 7%;background:#eee8dc;display:flex;align-items:center;justify-content:space-between;gap:30px}
-.hero h1{font-family:Georgia,serif;font-size:48px;max-width:500px;font-weight:normal}
-.hero p{color:#665f55;line-height:1.8}
-.hero button,.buy{background:#a47c39;color:white;border:0;padding:13px 24px;cursor:pointer;border-radius:3px}
-.hero img{width:42%;max-height:330px;object-fit:cover;border-radius:5px}
-.section{padding:45px 6%}
-.section h2{text-align:center;font-family:Georgia,serif;font-size:32px;font-weight:normal}
-.categories{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:25px 0}
-.categories button{padding:11px 20px;background:white;border:1px solid #ddd;cursor:pointer}
-.categories button.active{background:#a47c39;color:white}
-.search{display:block;width:100%;max-width:500px;margin:20px auto;padding:14px;border:1px solid #ddd;border-radius:3px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:25px}
-.card{background:white;padding-bottom:18px;text-align:center;border:1px solid #eee}
-.card img{width:100%;height:220px;object-fit:cover}
-.card h3{font-family:Georgia,serif;font-weight:normal}
-.price{color:#a47c39;font-weight:bold}
-.buy{margin-top:8px}
-footer{background:#24221f;color:white;text-align:center;padding:35px}
+body{margin:0;font-family:Arial,sans-serif;background:#faf8f3;color:#222}
+header{background:#fff;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;position:sticky;top:0;z-index:10}
+.logo{font-size:27px;font-weight:bold;letter-spacing:3px}
+.logo span{color:#b18a45}
+button{cursor:pointer;border:0}
+.cart-button{background:#171717;color:white;padding:12px 18px;border-radius:5px}
+.hero{padding:65px 7%;background:#e9e2d6;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.hero h1{font-size:42px;margin:0 0 15px}
+.hero p{line-height:1.7;max-width:450px}
+.hero img{width:42%;height:260px;object-fit:cover;border-radius:8px}
+.section{padding:35px 6%}
+.search{width:100%;padding:14px;border:1px solid #ddd;border-radius:5px;margin-bottom:25px;font-size:16px}
+.categories{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
+.categories button{background:#eee;padding:10px 17px;border-radius:20px}
+.categories button.active{background:#171717;color:white}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px}
+.product{background:white;border-radius:8px;overflow:hidden;border:1px solid #eee}
+.product img{width:100%;height:210px;object-fit:cover}
+.product-info{padding:15px}
+.product-info h3{margin:5px 0}
+.price{font-weight:bold;color:#a17b36;margin:12px 0}
+.add{background:#171717;color:white;padding:12px;width:100%;border-radius:4px}
+.add:hover,.cart-button:hover{background:#a17b36}
+footer{text-align:center;padding:25px;background:#171717;color:white;margin-top:40px}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:20}
+.cart-panel{position:fixed;right:0;top:0;width:100%;max-width:460px;height:100%;background:white;z-index:21;padding:22px;overflow-y:auto;transform:translateX(110%);transition:.25s}
+.cart-panel.open{transform:translateX(0)}
+.overlay.show{display:block}
+.cart-heading{display:flex;justify-content:space-between;align-items:center}
+.close{font-size:27px;background:none}
+.cart-item{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid #eee}
+.cart-item img{width:85px;height:85px;object-fit:cover;border-radius:5px}
+.cart-details{flex:1}
+.cart-details h4{margin:3px 0 8px}
+.quantity{display:flex;align-items:center;gap:12px;margin-top:10px}
+.quantity button{background:#eee;padding:6px 11px;border-radius:3px}
+.remove{background:none;color:#a33;margin-top:8px}
+.total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;margin:25px 0}
+.checkout{width:100%;background:#a17b36;color:white;padding:15px;border-radius:5px;font-size:16px}
+.empty{text-align:center;padding:40px 10px;color:#777}
+.checkout-form{display:none;margin-top:25px;border-top:1px solid #eee;padding-top:20px}
+.checkout-form input,.checkout-form textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #ddd;border-radius:4px;font-size:15px}
+.checkout-form label{font-size:14px;font-weight:bold}
+.note{font-size:12px;color:#777;line-height:1.5}
 @media(max-width:650px){
-header{padding:18px 4%;flex-wrap:wrap;gap:15px}
-nav{width:100%;display:flex;flex-wrap:wrap;gap:8px}
-nav a{margin:0 5px}
-.hero{padding:40px 6%;flex-direction:column}
-.hero h1{font-size:36px}
-.hero img{width:100%}
+.hero{flex-direction:column;align-items:flex-start;padding:40px 6%}
+.hero h1{font-size:32px}
+.hero img{width:100%;height:200px}
+.logo{font-size:21px}
+.section{padding:25px 5%}
 }
 </style>
 </head>
-
 <body>
 
 <header>
-<div class="logo">ROZZITAH</div>
-<nav>
-<a href="#">Home</a>
-<a href="#products">Shop</a>
-<a href="#categories">Categories</a>
-</nav>
-<button class="cart" onclick="showCart()">Cart (<span id="count">0</span>)</button>
+  <div class="logo">ROZZI<span>TAH</span></div>
+  <button class="cart-button" onclick="openCart()">Cart (<span id="cartCount">0</span>)</button>
 </header>
 
 <section class="hero">
-<div>
-<p>WELCOME TO ROZZITAH</p>
-<h1>Discover Your Style. Shop Your World.</h1>
-<p>Everyday essentials and luxury finds, all in one place.</p>
-<button onclick="document.getElementById('products').scrollIntoView()">SHOP NOW</button>
-</div>
-<img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800" alt="Fashion store">
+  <div>
+    <h1>Discover Your Style.</h1>
+    <p>Shop fashion, electronics, beauty, shoes and home essentials. Quality products at affordable prices.</p>
+    <button class="cart-button" onclick="document.getElementById('products').scrollIntoView()">Shop Now</button>
+  </div>
+  <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900" alt="Shopping store">
 </section>
 
 <section class="section" id="products">
-<h2>Explore Our Collection</h2>
+  <h2>Explore Our Products</h2>
+  <input class="search" id="search" placeholder="Search for products..." oninput="displayProducts()">
 
-<input class="search" id="search" placeholder="Search for products..." oninput="renderProducts()">
+  <div class="categories">
+    <button class="active" onclick="setCategory('All',this)">All</button>
+    <button onclick="setCategory('Fashion',this)">Fashion</button>
+    <button onclick="setCategory('Electronics',this)">Electronics</button>
+    <button onclick="setCategory('Beauty',this)">Beauty</button>
+    <button onclick="setCategory('Shoes',this)">Shoes</button>
+    <button onclick="setCategory('Home',this)">Home</button>
+  </div>
 
-<div class="categories" id="categories">
-<button class="active" onclick="filter('All',this)">All</button>
-<button onclick="filter('Fashion',this)">Fashion</button>
-<button onclick="filter('Electronics',this)">Electronics</button>
-<button onclick="filter('Beauty',this)">Beauty</button>
-<button onclick="filter('Shoes',this)">Shoes</button>
-<button onclick="filter('Home',this)">Home</button>
-</div>
-
-<div class="products" id="product-list"></div>
+  <div class="products" id="productList"></div>
 </section>
 
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<aside class="cart-panel" id="cartPanel">
+  <div class="cart-heading">
+    <h2>Your Shopping Cart</h2>
+    <button class="close" onclick="closeCart()">×</button>
+  </div>
+
+  <div id="cartItems"></div>
+  <div id="cartSummary"></div>
+
+  <div class="checkout-form" id="checkoutForm">
+    <h3>Customer Details</h3>
+    <form onsubmit="placeOrder(event)">
+      <label>Full Name</label>
+      <input id="customerName" required placeholder="Enter your name">
+
+      <label>Phone Number</label>
+      <input id="customerPhone" type="tel" required placeholder="Enter your phone number">
+
+      <label>Delivery Location</label>
+      <textarea id="customerLocation" required placeholder="Enter your delivery location"></textarea>
+
+      <button class="checkout" type="submit">Submit Order</button>
+    </form>
+    <p class="note">This is an order demonstration. Online payment and actual order processing will be added in a later step.</p>
+  </div>
+</aside>
+
 <footer>
-<h2>ROZZITAH</h2>
-<p>Affordable Living. Elegant Shopping.</p>
-<p>© 2026 Rozzitah Shop. All Rights Reserved.</p>
+  <h3>ROZZITAH</h3>
+  <p>Your Shopping. Your Style. Your Choice.</p>
+  <p>© 2026 Rozzitah. All rights reserved.</p>
 </footer>
 
 <script>
-const products=[
-{id:1,name:"Elegant Handbag",price:2500,category:"Fashion",image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500"},
-{id:2,name:"Wireless Headphones",price:3500,category:"Electronics",image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"},
-{id:3,name:"Luxury Wristwatch",price:4500,category:"Fashion",image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"},
-{id:4,name:"Running Sneakers",price:3200,category:"Shoes",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"},
-{id:5,name:"Beauty Skincare",price:1800,category:"Beauty",image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500"},
-{id:6,name:"Modern Home Decor",price:2200,category:"Home",image:"https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=500"},
-{id:7,name:"Smart Watch",price:5500,category:"Electronics",image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"},
-{id:8,name:"Classic Shoes",price:2800,category:"Shoes",image:"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500"}
+const products = [
+{id:1,name:"Elegant Handbag",category:"Fashion",price:2500,image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500"},
+{id:2,name:"Wireless Headphones",category:"Electronics",price:3500,image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"},
+{id:3,name:"Luxury Wristwatch",category:"Fashion",price:4500,image:"https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500"},
+{id:4,name:"Running Sneakers",category:"Shoes",price:3200,image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"},
+{id:5,name:"Beauty Skincare",category:"Beauty",price:1800,image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500"},
+{id:6,name:"Modern Home Decor",category:"Home",price:2200,image:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500"},
+{id:7,name:"Smart Watch",category:"Electronics",price:5500,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"},
+{id:8,name:"Classic Shoes",category:"Shoes",price:2800,image:"https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500"}
 ];
 
-let cart=[];
-let selected="All";
+let cart = JSON.parse(localStorage.getItem("rozzitahCart") || "[]");
+let selectedCategory = "All";
 
-function renderProducts(){
-const search=document.getElementById("search").value.toLowerCase();
-const filtered=products.filter(p=>
-(selected==="All"||p.category===selected)&&
-p.name.toLowerCase().includes(search)
-);
-document.getElementById("product-list").innerHTML=filtered.map(p=>`
-<div class="card">
-<img src="${p.image}" alt="${p.name}">
-<h3>${p.name}</h3>
-<p class="price">KSh ${p.price.toLocaleString()}</p>
-<button class="buy" onclick="addToCart(${p.id})">ADD TO CART</button>
-</div>`).join("");
+function money(amount){
+ return "KSh " + amount.toLocaleString("en-KE");
 }
 
-function filter(category,button){
-selected=category;
-document.querySelectorAll(".categories button").forEach(b=>b.classList.remove("active"));
-button.classList.add("active");
-renderProducts();
+function saveCart(){
+ localStorage.setItem("rozzitahCart",JSON.stringify(cart));
+ updateCart();
+}
+
+function displayProducts(){
+ const search = document.getElementById("search").value.toLowerCase();
+ const filtered = products.filter(p =>
+ (selectedCategory==="All" || p.category===selectedCategory) &&
+ p.name.toLowerCase().includes(search)
+ );
+
+ document.getElementById("productList").innerHTML = filtered.map(p => `
+ <div class="product">
+   <img src="${p.image}" alt="${p.name}">
+   <div class="product-info">
+     <h3>${p.name}</h3>
+     <small>${p.category}</small>
+     <p class="price">${money(p.price)}</p>
+     <button class="add" onclick="addToCart(${p.id})">Add to Cart</button>
+   </div>
+ </div>
+ `).join("") || "<p>No products found.</p>";
+}
+
+function setCategory(category,button){
+ selectedCategory=category;
+ document.querySelectorAll(".categories button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ displayProducts();
 }
 
 function addToCart(id){
-cart.push(products.find(p=>p.id===id));
-document.getElementById("count").innerText=cart.length;
-alert("Product added to your cart!");
+ const item=cart.find(p=>p.id===id);
+ if(item){item.quantity++;}
+ else{
+  const product=products.find(p=>p.id===id);
+  cart.push({...product,quantity:1});
+ }
+ saveCart();
 }
 
-function showCart(){
-if(cart.length===0){
-alert("Your shopping cart is empty.");
-return;
-}
-let total=cart.reduce((sum,p)=>sum+p.price,0);
-let items=cart.map(p=>p.name+" - KSh "+p.price.toLocaleString()).join("\n");
-alert("YOUR ROZZITAH CART\n\n"+items+"\n\nTotal: KSh "+total.toLocaleString());
+function changeQuantity(id,change){
+ const item=cart.find(p=>p.id===id);
+ if(!item)return;
+ item.quantity+=change;
+ if(item.quantity<=0){
+  cart=cart.filter(p=>p.id!==id);
+ }
+ saveCart();
 }
 
-renderProducts();
+function removeItem(id){
+ cart=cart.filter(p=>p.id!==id);
+ saveCart();
+}
+
+function updateCart(){
+ const count=cart.reduce((sum,p)=>sum+p.quantity,0);
+ document.getElementById("cartCount").textContent=count;
+
+ const container=document.getElementById("cartItems");
+ const summary=document.getElementById("cartSummary");
+ const total=cart.reduce((sum,p)=>sum+p.price*p.quantity,0);
+
+ if(cart.length===0){
+  container.innerHTML='<div class="empty"><h3>Your cart is empty</h3><p>Add some products to get started.</p></div>';
+  summary.innerHTML="";
+  document.getElementById("checkoutForm").style.display="none";
+  return;
+ }
+
+ container.innerHTML=cart.map(p=>`
+ <div class="cart-item">
+  <img src="${p.image}" alt="${p.name}">
+  <div class="cart-details">
+   <h4>${p.name}</h4>
+   <strong>${money(p.price*p.quantity)}</strong>
+   <div class="quantity">
+    <button onclick="changeQuantity(${p.id},-1)">−</button>
+    <span>${p.quantity}</span>
+    <button onclick="changeQuantity(${p.id},1)">+</button>
+   </div>
+   <button class="remove" onclick="removeItem(${p.id})">Remove</button>
+  </div>
+ </div>
+ `).join("");
+
+ summary.innerHTML=`
+ <div class="total"><span>Total</span><span>${money(total)}</span></div>
+ <button class="checkout" onclick="showCheckout()">Proceed to Checkout</button>
+ `;
+}
+
+function openCart(){
+ document.getElementById("cartPanel").classList.add("open");
+ document.getElementById("overlay").classList.add("show");
+ updateCart();
+}
+
+function closeCart(){
+ document.getElementById("cartPanel").classList.remove("open");
+ document.getElementById("overlay").classList.remove("show");
+}
+
+function showCheckout(){
+ document.getElementById("checkoutForm").style.display="block";
+ document.getElementById("checkoutForm").scrollIntoView({behavior:"smooth"});
+}
+
+function placeOrder(event){
+ event.preventDefault();
+ const name=document.getElementById("customerName").value;
+ const phone=document.getElementById("customerPhone").value;
+ const location=document.getElementById("customerLocation").value;
+
+ if(cart.length===0)return;
+
+ const total=cart.reduce((sum,p)=>sum+p.price*p.quantity,0);
+
+ alert(
+ "Thank you, "+name+"! Your order details have been entered.\\n"+
+ "Phone: "+phone+"\\n"+
+ "Delivery: "+location+"\\n"+
+ "Order total: "+money(total)+"\\n\\n"+
+ "This is a demonstration. Actual order submission and payment will be connected in a later step."
+ );
+}
+
+displayProducts();
+updateCart();
 </script>
 
 </body>
