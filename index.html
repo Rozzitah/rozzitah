@@ -279,5 +279,107 @@ displayProducts();
 updateCart();
 </script>
 
+<style>
+.seller-launch{
+ position:fixed;bottom:20px;right:20px;background:#a17b36;
+ color:white;padding:14px 20px;border:0;border-radius:6px;
+ z-index:15;font-weight:bold;
+}
+.seller-box{
+ display:none;position:fixed;inset:0;background:#0009;
+ z-index:30;align-items:center;justify-content:center;padding:15px;
+}
+.seller-content{
+ background:white;padding:25px;border-radius:8px;
+ width:100%;max-width:450px;max-height:90vh;overflow-y:auto;
+}
+.seller-content input,.seller-content select{
+ width:100%;padding:12px;margin:8px 0 15px;
+ border:1px solid #ddd;border-radius:4px;
+}
+.seller-content label{font-weight:bold;font-size:14px}
+.seller-content button{
+ background:#171717;color:white;padding:12px;
+ border:0;border-radius:4px;margin:5px 5px 5px 0;
+}
+</style>
+
+<button class="seller-launch" onclick="openSeller()">Seller Dashboard</button>
+
+<div class="seller-box" id="sellerBox">
+ <div class="seller-content">
+  <h2>Rozzitah Seller Dashboard</h2>
+  <p>Add a product to your shop.</p>
+
+  <form id="sellerForm">
+   <label>Product Name</label>
+   <input id="sellerName" required placeholder="Enter product name">
+
+   <label>Category</label>
+   <select id="sellerCategory" required>
+    <option value="">Choose category</option>
+    <option>Fashion</option>
+    <option>Electronics</option>
+    <option>Beauty</option>
+    <option>Shoes</option>
+    <option>Home</option>
+   </select>
+
+   <label>Price in KSh</label>
+   <input id="sellerPrice" type="number" min="1" required placeholder="Enter price">
+
+   <label>Product Image URL</label>
+   <input id="sellerImage" type="url" required placeholder="Paste image link">
+
+   <button type="submit">Add Product</button>
+   <button type="button" onclick="closeSeller()">Close</button>
+  </form>
+
+  <h3>Your Added Products</h3>
+  <div id="sellerProducts"></div>
+ </div>
+</div>
+
+<script>
+function openSeller(){
+ document.getElementById("sellerBox").style.display="flex";
+ showSellerProducts();
+}
+
+function closeSeller(){
+ document.getElementById("sellerBox").style.display="none";
+}
+
+function showSellerProducts(){
+ const saved=JSON.parse(localStorage.getItem("rozzitahSellerProducts")||"[]");
+ document.getElementById("sellerProducts").innerHTML=
+ saved.map(p=>`<p>${p.name} — KSh ${p.price}</p>`).join("") ||
+ "<p>No products added yet.</p>";
+}
+
+document.getElementById("sellerForm").addEventListener("submit",function(event){
+ event.preventDefault();
+
+ const product={
+  id:Date.now(),
+  name:document.getElementById("sellerName").value,
+  category:document.getElementById("sellerCategory").value,
+  price:Number(document.getElementById("sellerPrice").value),
+  image:document.getElementById("sellerImage").value
+ };
+
+ const saved=JSON.parse(localStorage.getItem("rozzitahSellerProducts")||"[]");
+ saved.push(product);
+ localStorage.setItem("rozzitahSellerProducts",JSON.stringify(saved));
+
+ products.push(product);
+ displayProducts();
+ showSellerProducts();
+ this.reset();
+
+ alert("Product added successfully!");
+});
+</script>
+
 </body>
 </html>
