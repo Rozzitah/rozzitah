@@ -138,7 +138,11 @@ const products = [
 {id:7,name:"Smart Watch",category:"Electronics",price:5500,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"},
 {id:8,name:"Classic Shoes",category:"Shoes",price:2800,image:"https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500"}
 ];
+const savedSellerProducts = JSON.parse(
+  localStorage.getItem("rozzitahSellerProducts") || "[]"
+);
 
+products.push(...savedSellerProducts);
 let cart = JSON.parse(localStorage.getItem("rozzitahCart") || "[]");
 let selectedCategory = "All";
 
